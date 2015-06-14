@@ -2,22 +2,55 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="src/tago-playerbox.css">
+    <link rel="stylesheet" type="text/css" href="demo/css/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="demo/css/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="demo/css/github-light.css" media="screen">
+    <style>
+    .btn-block {
+        width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+    </style>
+    <link rel="stylesheet" href="src/tago-playerbox.css">
 
 	<title>Tago Playerbox.js</title>
 </head>
 <body>
 
-	<h1>Tago Playerbox.js</h1>
+    <section class="page-header">
+        <h1 class="project-name">Tago-playerbox.js</h1>
+        <h2 class="project-tagline">The simplest and dependency free Youtube modal player.</h2>
+        <a id="play" href="#" class="btn btn-block">Try it!</a>
+        <a href="https://github.com/tago-io/tago-playerbox.js" class="btn">View on GitHub</a>
+        <a href="https://github.com/tago-io/tago-playerbox.js/zipball/master" class="btn">Download .zip</a>
+        <a href="https://github.com/tago-io/tago-playerbox.js/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-	<p>The simplest and dependency free Youtube modal player.</p>
+    <section class="main-content">
+        <h3>Install</h3>
 
-	<a href="#">click</a>
+        <p><a href="https://github.com/tago-io/tago-playerbox.js/zipball/master" class="anchor">Download</a> it from the repository and get the files from the <code>dist</code> folder. (Bower and npm will be available soon)</p>
+
+        <h3>Getting Started</h3>
+
+        <p>Add the following script after referencing the <code>css</code> and <code>js</code> files</p>
+
+        <pre><code>window.tago.playerbox.init('#play-button', 'youtubeVideoId', 'path/to/loading.gif');</code></pre>
+
+        <footer class="site-footer">
+            <span class="site-footer-owner"><a href="https://github.com/tago-io/tago-playerbox.js">Tago-playerbox.js</a> is maintained by <a href="https://github.com/tago-io">tago-io</a>.</span>
+
+            <span class="site-footer-credits">This page is using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+        </footer>
+    </section>
 
 	<script src="src/tago-playerbox.js"></script>
 	<script>
-		window.tago.playerbox.init('a', 'TChfKm8CJac', 'src/tago-playerbox-loading.gif');
+		window.tago.playerbox.init('#play', 'TChfKm8CJac', 'src/tago-playerbox-loading.gif');
 	</script>
 </body>
 </html>
