@@ -8,8 +8,6 @@
 	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 })(window, document);
 
-// 3. This function creates an <iframe> (and YouTube player)
-//    after the API code downloads.
 /* jshint unused: false */
 function onYouTubeIframeAPIReady() {
 	window.tago.playerbox.ready();
@@ -19,7 +17,7 @@ var tago = window.tago === undefined ? {} : window.tago ;
 
 (function(window, document, tago) {
 	var player, hideClass = 'tago-playerbox-hide', elements = {}, isVisible = false,
-	playerIsReady = false, playeroptions = {
+	loadingImgSrc = 'tago-playerbox-loading.gif',playerIsReady = false, playeroptions = {
 		playerVars: {
 			autoplay: 0
 		},
@@ -41,16 +39,33 @@ var tago = window.tago === undefined ? {} : window.tago ;
 	var templates = {
 		overlay: '<div class="{overlay} {hide}"></div>',
 		playerbox: '<div class="{playerbox} {hide}"><div class="{playerboxContent}"><div></div><span class="{close}">&times;</span></div></div>',
-		loading: '<div class="{loading} {hide}"><img src="/assets/img/loading.gif" alt="Loading indicator" /></div>'
+		loading: '<div class="{loading} {hide}"><img src="{loadingImgSrc}" alt="Loading indicator" /></div>'
 	};
 
+
 	tago.playerbox = {
-		init: function(triggerSelector, youtubeId) {
-			buildElements(triggerSelector);
+
+		/**
+		 * Initializes the component by building and adding all the necessary elements to the body. There will
+		 * not be any events attached to the elements yet.
+		 * This function should be called only once by the onYouTubeIframeAPIReady function.
+		 * @param  {String} triggerSelector the css selector to the element that will trigger the video
+		 * @param  {String} youtubeId       the youtube id of the video that should be displayed
+		 * @param  {String} loadingImgSrc 	the path to the loading image. Default is root
+		 * @return {undefined}
+		 */
+		init: function(triggerSelector, youtubeId, loadingImgSource) {
+			buildElements(triggerSelector, loadingImgSource);
 			playeroptions.videoId = youtubeId;
 			document.body.appendChild(elements.overlay);
 			document.body.appendChild(elements.loading);
 		},
+
+		/**
+		 * Initializes the YT player and appends it. The events to show and hide the modal are binded to the
+		 * elements.
+		 * @return {undefined}
+		 */
 		ready: function () {
 			var videodiv = elements.playerbox.firstElementChild.firstElementChild;
 			player = new YT.Player(videodiv, playeroptions);
@@ -59,6 +74,10 @@ var tago = window.tago === undefined ? {} : window.tago ;
 		}
 	};
 
+	/**
+	 * Remove the Loading indicator and play the video if the modal is opened
+	 * @return {[type]} [description]
+	 */
 	function onPlayerReady () {
 		playerIsReady = true;
 		elements.loading.remove();
@@ -67,13 +86,18 @@ var tago = window.tago === undefined ? {} : window.tago ;
 		}
 	}
 
+	/**
+	 * It will hide the modal when the video ends
+	 * @param  {Object} event the event data
+	 * @return {undefined}
+	 */
 	function onPlayerStateChange (event) {
 		if (event.data === YT.PlayerState.ENDED) {
 			hide();
 		}
 	}
 
-	function buildElements (triggerSelector) {
+	function buildElements (triggerSelector, loadingImgSource) {
 		var div = document.createElement('div');
 		div.innerHTML = t(templates.overlay, { overlay: classes.overlay, hide: classes.hide }) +
 						t(templates.playerbox, {
@@ -82,7 +106,7 @@ var tago = window.tago === undefined ? {} : window.tago ;
 							playerboxContent: classes.playerboxContent,
 							close: classes.close
 						}) +
-						t(templates.loading, { loading: classes.loading, hide: classes.hide });
+						t(templates.loading, { loading: classes.loading, hide: classes.hide, loadingImgSrc: loadingImgSource || loadingImgSrc });
 		elements.trigger = document.querySelector(triggerSelector);
 		elements.overlay = div.childNodes[0];
 		elements.playerbox = div.childNodes[1];
